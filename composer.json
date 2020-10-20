@@ -1,0 +1,44 @@
+{
+    "name": "bonabrian/laravel-otp",
+    "description": "Laravel OTP generator and validator without using database",
+    "keywords": [
+        "otp",
+        "laravel otp",
+        "php otp",
+        "otp without database"
+    ],
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bona Brian Siagian",
+            "email": "bonabriansiagian@gmail.com",
+            "homepage": "https://bonabrian.github.io"
+        }
+    ],
+    "homepage": "https://github.com/bonabrian/laravel-otp",
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bonabrian\\Otp\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bonabrian\\Otp\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "prefer-stable": true
+}
