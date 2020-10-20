@@ -9,6 +9,7 @@
     ],
     "type": "library",
     "require-dev": {
+        "orchestra/testbench": "^6.2",
         "phpunit/phpunit": "^9.4"
     },
     "license": "MIT",
@@ -22,7 +23,8 @@
     "homepage": "https://github.com/bonabrian/laravel-otp",
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.3"
+        "php": "^7.3",
+        "illuminate/cache": "^8.10"
     },
     "autoload": {
         "psr-4": {
