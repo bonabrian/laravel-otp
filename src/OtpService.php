@@ -80,6 +80,8 @@ class OtpService
      * Generate new OTP
      *
      * @param string $key
+     *
+     * @return string
      */
     public function generate($key): string
     {
@@ -94,6 +96,8 @@ class OtpService
      * Set key for
      *
      * @param string $key
+     *
+     * @return string
      */
     protected function keyFor($key): string
     {
@@ -102,6 +106,11 @@ class OtpService
 
     /**
      * Calculate to generate OTP
+     *
+     * @param string $secret
+     * @param $factor
+     *
+     * @return string
      */
     protected function calculate($secret, $factor = null): string
     {
@@ -120,6 +129,10 @@ class OtpService
         return str_pad((string) $otp, $this->digits, '0', STR_PAD_LEFT);
     }
 
+    /**
+     * @param $divisionFactor
+     * @return string
+     */
     protected function timeFactor($divisionFactor): string
     {
         $factor = $divisionFactor ? floor($divisionFactor) : floor($this->time / $this->expiry);
@@ -138,5 +151,42 @@ class OtpService
         }
 
         return implode('', $text);
+    }
+
+    /**
+     * Validate the OTP
+     *
+     * @param string $code
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function validate($code, $key): bool
+    {
+        $secret = $this->cache->get($this->keyFor($key));
+
+        if (empty($secret)) {
+            return false;
+        }
+
+        if ($code == $this->calculate($secret)) {
+            return true;
+        }
+
+        $factor = ($this->time - floor($this->expiry / 2)) / $this->expiry;
+
+        return $code == $this->calculate($secret, $factor);
+    }
+
+    /**
+     * Forget the otp
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function forget($key): bool
+    {
+        return $this->cache->forget($this->keyFor($key));
     }
 }

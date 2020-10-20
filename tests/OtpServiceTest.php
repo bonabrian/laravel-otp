@@ -67,4 +67,38 @@ class OtpServiceTest extends TestCase
         $this->assertEquals(4, strlen($otp1->generate('foo')));
         $this->assertEquals(6, strlen($otp2->generate('foo')));
     }
+
+    /** @test */
+    public function validatesTheOtp()
+    {
+        $otp = new MockOtp();
+        $code = $otp->generate('foo');
+
+        $this->assertFalse($otp->validate($code, 'bar'));
+        $this->assertTrue($otp->validate($code, 'foo'));
+    }
+
+    /** @test */
+    public function itShouldForgetTheOtp()
+    {
+        $otp = new MockOtp();
+        $code = $otp->generate('foo');
+
+        $this->assertFalse($otp->validate($code, 'bar'));
+        $this->assertTrue($otp->validate($code, 'foo'));
+
+        $otp->forget('foo');
+        $this->assertFalse($otp->validate($code, 'foo'));
+    }
+
+    /** @test */
+    public function otpWillBeInvalidAfterTheExpiry()
+    {
+        $otp = new MockOtp();
+        $code = $otp->generate('foo');
+
+        $otp->setTime(time() + ($otp->getExpiry() * 100));
+
+        $this->assertFalse($otp->validate($code, 'foo'));
+    }
 }
