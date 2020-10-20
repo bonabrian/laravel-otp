@@ -1,3 +1,4 @@
 /vendor
 /build
+/tests/php-unit-cache
 .phpunit.result.cache
