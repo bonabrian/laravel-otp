@@ -38,4 +38,33 @@ class OtpServiceTest extends TestCase
         $this->assertEquals(300, $otp1->getExpiry());
         $this->assertEquals(600, $otp2->getExpiry());
     }
+
+    /** @test */
+    public function canGenerateOtp()
+    {
+        $otp = new MockOtp();
+
+        $this->assertNotEmpty($otp->generate('foo'));
+    }
+
+    /** @test */
+    public function shouldGenerateDifferentOtpEachTime()
+    {
+        $otp = new MockOtp();
+        $this->assertNotEquals($otp->generate('foo'), $otp->generate('foo'));
+        $this->assertNotEquals($otp->generate('bar'), $otp->generate('bar'));
+    }
+
+    /** @test */
+    public function shouldGeneratesTheSameNumberOfDigits()
+    {
+        $otp1 = new MockOtp();
+        $otp1->setDigits(4);
+
+        $otp2 = new MockOtp();
+        $otp2->setDigits(6);
+
+        $this->assertEquals(4, strlen($otp1->generate('foo')));
+        $this->assertEquals(6, strlen($otp2->generate('foo')));
+    }
 }
